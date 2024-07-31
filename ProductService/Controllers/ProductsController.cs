@@ -33,5 +33,47 @@ namespace ProductService.Controllers
             var product = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetProducts), new { id = product.Id }, product);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<bool>> PutProduct(int id, UpdateProductCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+
+            var result = await _mediator.Send(command);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteProduct(int id)
+        {
+            var command = new DeleteProductCommand { Id = id };
+            var result = await _mediator.Send(command);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Product>> GetProductById(int id)
+        {
+            var query = new GetProductByIdQuery(id);
+            var product = await _mediator.Send(query);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
+        }
     }
 }

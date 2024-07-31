@@ -33,5 +33,48 @@ namespace OrderService.Controllers
             var order = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetOrders), new { id = order.Id }, order);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<bool>> PutOrder(int id, UpdateOrderCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+
+            var result = await _mediator.Send(command);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteOrder(int id)
+        {
+            var command = new DeleteOrderCommand { Id = id };
+            var result = await _mediator.Send(command);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Order>> GetOrderById(int id)
+        {
+            var query = new GetOrderByIdQuery { Id = id };
+            var order = await _mediator.Send(query);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(order);
+        }
     }
 }
