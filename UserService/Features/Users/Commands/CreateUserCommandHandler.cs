@@ -1,11 +1,10 @@
 using MediatR;
 using UserService.Data;
 using UserService.Models;
-using UserService.Features.Users.Commands;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UserService.Features.Users.Handlers
+namespace UserService.Features.Users.Commands
 {
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, User>
     {
@@ -24,7 +23,7 @@ namespace UserService.Features.Users.Handlers
             var user = new User { UserName = request.UserName, Email = request.Email };
 
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return user;
         }

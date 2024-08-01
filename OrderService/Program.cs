@@ -1,15 +1,21 @@
 using Microsoft.EntityFrameworkCore;
-using MediatR;
 using OrderService.Data;
 using System.Reflection;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddDbContext<OrderDbContext>(
-    options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+}
+
+builder.Services.AddDbContext<OrderDbContext>(options => options.UseSqlite(connectionString));
+
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSwaggerGen();
 
@@ -19,9 +25,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrderService v1"));
 }
+
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrderService v1"));
 
 app.UseAuthorization();
 

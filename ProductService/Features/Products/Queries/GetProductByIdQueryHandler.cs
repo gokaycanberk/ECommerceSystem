@@ -1,14 +1,13 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ProductService.Data;
-using ProductService.Features.Products.Queries;
 using ProductService.Models;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProductService.Features.Products.Handlers
+namespace ProductService.Features.Products.Queries
 {
-    public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Product>
+    public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Product?>
     {
         private readonly ApplicationDbContext _context;
 
@@ -17,19 +16,15 @@ namespace ProductService.Features.Products.Handlers
             _context = context;
         }
 
-        public async Task<Product> Handle(
+        public async Task<Product?> Handle(
             GetProductByIdQuery request,
             CancellationToken cancellationToken
         )
         {
-            var product = await _context.Products.FindAsync(request.Id);
-
-            if (product == null)
-            {
-                // Optional: Handle not found case
-                return null;
-            }
-
+            var product = await _context.Products.FirstOrDefaultAsync(
+                p => p.Id == request.Id,
+                cancellationToken
+            );
             return product;
         }
     }

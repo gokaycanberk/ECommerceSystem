@@ -5,7 +5,7 @@ using ProductService.Features.Products.Commands;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProductService.Features.Products.Handlers
+namespace ProductService.Features.Products.Commands
 {
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, bool>
     {
@@ -32,8 +32,7 @@ namespace ProductService.Features.Products.Handlers
             product.Price = request.Price;
             product.Stock = request.Stock;
 
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return true;
         }

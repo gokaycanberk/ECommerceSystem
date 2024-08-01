@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UserService.Features.Users.Handlers
+namespace UserService.Features.Users.Queries
 {
     public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, IEnumerable<User>>
     {

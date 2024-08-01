@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProductService.Features.Products.Handlers
+namespace ProductService.Features.Products.Queries
 {
-    public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, IEnumerable<Product>>
+    public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, List<Product>>
     {
         private readonly ApplicationDbContext _context;
 
@@ -18,12 +18,12 @@ namespace ProductService.Features.Products.Handlers
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> Handle(
+        public async Task<List<Product>> Handle(
             GetProductsQuery request,
             CancellationToken cancellationToken
         )
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products.ToListAsync(cancellationToken);
         }
     }
 }

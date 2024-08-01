@@ -67,7 +67,7 @@ namespace OrderService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrderById(int id)
         {
-            var query = new GetOrderByIdQuery { Id = id };
+            var query = new GetOrderByIdQuery(id); // Constructor kullanarak id'yi geçiyoruz.
             var order = await _mediator.Send(query);
             if (order == null)
             {

@@ -4,5 +4,5 @@ using System.Collections.Generic;
 
 namespace ProductService.Features.Products.Queries
 {
-    public class GetProductsQuery : IRequest<IEnumerable<Product>> { }
+    public class GetProductsQuery : IRequest<List<Product>> { }
 }

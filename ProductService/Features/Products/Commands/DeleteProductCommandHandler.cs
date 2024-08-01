@@ -5,7 +5,7 @@ using ProductService.Features.Products.Commands;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProductService.Features.Products.Handlers
+namespace ProductService.Features.Products.Commands
 {
     public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, bool>
     {

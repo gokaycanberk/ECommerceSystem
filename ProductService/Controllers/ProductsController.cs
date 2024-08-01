@@ -48,7 +48,7 @@ namespace ProductService.Controllers
                 return NotFound();
             }
 
-            return NoContent();
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]

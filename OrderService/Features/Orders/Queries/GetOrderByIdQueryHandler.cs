@@ -1,14 +1,11 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
-using OrderService.Features.Orders.Queries;
 using OrderService.Models;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace OrderService.Features.Orders.Handlers
+namespace OrderService.Features.Orders.Queries
 {
-    public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Order>
+    public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Order?>
     {
         private readonly OrderDbContext _context;
 
@@ -17,20 +14,15 @@ namespace OrderService.Features.Orders.Handlers
             _context = context;
         }
 
-        public async Task<Order> Handle(
+        public async Task<Order?> Handle(
             GetOrderByIdQuery request,
             CancellationToken cancellationToken
         )
         {
-            var order = await _context.Orders.FindAsync(request.Id);
-
-            if (order == null)
-            {
-                // Optional: Handle not found case
-                return null;
-            }
-
-            return order;
+            return await _context.Orders.FirstOrDefaultAsync(
+                o => o.Id == request.Id,
+                cancellationToken
+            );
         }
     }
 }

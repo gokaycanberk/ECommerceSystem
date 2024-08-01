@@ -1,11 +1,10 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using UserService.Data;
-using UserService.Features.Users.Commands;
+using UserService.Models;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UserService.Features.Users.Handlers
+namespace UserService.Features.Users.Commands
 {
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, bool>
     {
@@ -31,8 +30,7 @@ namespace UserService.Features.Users.Handlers
             user.UserName = request.UserName;
             user.Email = request.Email;
 
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return true;
         }

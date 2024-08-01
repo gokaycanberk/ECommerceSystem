@@ -5,7 +5,7 @@ using ProductService.Features.Products.Commands;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProductService.Features.Products.Handlers
+namespace ProductService.Features.Products.Commands
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Product>
     {
@@ -29,7 +29,7 @@ namespace ProductService.Features.Products.Handlers
             };
 
             _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return product;
         }

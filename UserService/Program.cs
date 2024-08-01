@@ -1,16 +1,23 @@
 using Microsoft.EntityFrameworkCore;
-using MediatR;
 using UserService.Data;
 using System.Reflection;
+using MediatR;
+using UserService.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddDbContext<UserDbContext>(
-    options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly()); // MediatR'ın eklenmesi
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+}
+
+builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlite(connectionString));
+
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
@@ -19,9 +26,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserService v1"));
 }
+
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserService v1"));
 
 app.UseAuthorization();
 

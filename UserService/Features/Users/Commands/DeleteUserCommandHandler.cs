@@ -5,7 +5,7 @@ using UserService.Features.Users.Commands;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UserService.Features.Users.Handlers
+namespace UserService.Features.Users.Commands
 {
     public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, bool>
     {
