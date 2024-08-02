@@ -14,7 +14,7 @@ if (string.IsNullOrEmpty(connectionString))
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 }
 
-builder.Services.AddDbContext<OrderDbContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<OrderDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSwaggerGen();

@@ -5,9 +5,9 @@ namespace OrderService.Data
 {
     public class OrderDbContext : DbContext
     {
-        public DbSet<Order> Orders { get; set; } = null!; // Non-nullable property initialization
-
         public OrderDbContext(DbContextOptions<OrderDbContext> options)
             : base(options) { }
+
+        public DbSet<Order> Orders { get; set; }
     }
 }

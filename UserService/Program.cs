@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using UserService.Data;
 using System.Reflection;
 using MediatR;
-using UserService.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +14,7 @@ if (string.IsNullOrEmpty(connectionString))
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 }
 
-builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSwaggerGen();
