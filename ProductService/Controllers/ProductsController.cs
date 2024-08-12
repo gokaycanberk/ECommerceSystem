@@ -40,6 +40,7 @@ namespace ProductService.Controllers
             if (id != command.Id)
             {
                 return BadRequest();
+                //test
             }
 
             var result = await _mediator.Send(command);
